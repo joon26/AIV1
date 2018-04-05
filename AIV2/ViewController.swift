@@ -9,50 +9,63 @@
 import UIKit
 
 class ViewController: UIViewController {
+    //이미지의 인덱스
+    var counter = 1
+    //타이머
+    var myTimer = Timer()
+    //스위치 온오프 카운터
+    var c = 1
+    
+    var tF = true
+    
     @IBOutlet weak var myImageView: UIImageView!
     @IBOutlet weak var count: UILabel!
-    var index = 1
-    // 방향
-    
-    var di = true // true 증가 false는 감소
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        myImageView.image = UIImage(named: "frame1.png")
-        count.text = String(1)
+        count.text = String(counter)
     }
 
+    @IBAction func play(_ sender: Any) {
+        //타이머 실행
+        if c == 1 {
+            myTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(doAnimation), userInfo: nil, repeats: true)
+            c = 0
+        }else{
+            myTimer.invalidate()
+            c = 1
+        }
+        
+        
+    }
     @IBAction func bt(_ sender: Any) {
-        myImageView.image = UIImage(named:"frame2.png")
-        count.text = String(index)
-        
-        //1~5 5~1 방향확인
-        if index == 1 {
-            di = true
-        }else if index == 5 {
-            di = false
+        //타이머 중지
+        myTimer.invalidate()
+    }
+    @objc func doAnimation() {
+//        타이머로 의해 동적으로 호출되는 함수
+//      1~5,5~1 반복
+        if counter == 5 {
+            tF = false
+        } else if counter == 1 {
+            tF = true
         }
-        if di == true {
-            index = index + 1
-        }else {
-            index = index - 1
+        if tF == true {
+            counter = counter + 1
+        } else if tF == false{
+            counter = counter - 1
         }
         
-        
-        
-//        1~5반복
-//        if index == 5 {
-//            index = 1
-//        }else{
-//            index = index + 1
+//        1~5 반복
+//        if counter == 5 {
+//            counter = 1
+//        } else {
+//            counter = counter + 1
 //        }
-//
-        myImageView.image = UIImage(named: "frame\(index).png")
-        count.text = String(index)
+        myImageView.image = UIImage(named: "frame\(counter).png")
+        count.text = String(counter)
     }
     
-
 
 }
 
